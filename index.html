@@ -89,18 +89,45 @@
     const videoContainer = document.getElementById('video-container');
     const backgroundVideo = document.getElementById('background-video');
 
+    // Функция для определения типа устройства
+    function getDeviceType() {
+      const userAgent = navigator.userAgent;
+      if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(userAgent)) {
+        return "tablet";
+      }
+      if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(userAgent)) {
+        return "mobile";
+      }
+      return "desktop";
+    }
+
     bigButton.addEventListener('click', () => {
+      const deviceType = getDeviceType();
+
       // Показать видео
       videoContainer.style.display = 'block';
-      
+
       // Включить видео
       backgroundVideo.play();
 
       // Запуск анимации
       bigButton.classList.add('animated');
 
-      // Открытие страницы Roblox в Microsoft Store
-      window.open('ms-windows-store://pdp/?productid=9nblgggzm6wm', '_blank');
+      if (deviceType === 'mobile') {
+        // Если устройство мобильное
+        setTimeout(() => {
+          if (/(Android)/i.test(navigator.userAgent)) {
+            // Если Android, перенаправить в Google Play
+            window.open('https://play.google.com/store/apps/details?id=com.roblox.client', '_blank');
+          } else {
+            // Если iOS, перенаправить в App Store
+            window.open('https://apps.apple.com/app/roblox/id431946152', '_blank');
+          }
+        }, 5000);
+      } else {
+        // Если устройство не мобильное, открыть Microsoft Store
+        window.open('ms-windows-store://pdp/?productid=9nblgggzm6wm', '_blank');
+      }
     });
   </script>
 </body>
